@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = 'calculator'
+        GITHUB_REPO_URL = 'https://github.com/NabarunMukherjee11/SPEMiniProject.git'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout the code from the GitHub repository
+                    git branch: 'main', url: "${GITHUB_REPO_URL}"
+                }
+            }
+        }
+
+        stage('Testing') {
+            steps {
+                script {
+                    // Test the code
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Building Project JAR') {
+            steps {
+                script {
+                    // Building the project JAR file
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    docker.build("${DOCKER_IMAGE_NAME}", '.')
+                    Error: No valid classpath found in the export
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script{
+                    docker.withRegistry('', 'DockerHubCred') {
+                    sh 'docker tag calculator nabaruniiitb/calculator:latest'
+                    sh 'docker push nabaruniiitb/calculator'
+                    }
+                 }
+            }
+        }
+
+   stage('Run Ansible Playbook') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        playbook: 'deploy.yml',
+                        inventory: 'inventory'
+                     )
+                }
+            }
+        }
+    }
+}
