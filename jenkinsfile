@@ -39,7 +39,6 @@ pipeline {
                 script {
                     // Build Docker image
                     docker.build("${DOCKER_IMAGE_NAME}", '.')
-                    Error: No valid classpath found in the expor
                 }
             }
         }
