@@ -6,8 +6,8 @@ RUN apt-get update && \
 
 RUN mkdir /app
 
-COPY ./target/Calculator-1.0-SNAPSHOT.jar /app/
+COPY ./target/calculator-1.0-SNAPSHOT.jar /app/
 
 WORKDIR /app
 
-CMD ["java", "-jar", "Calculator-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "calculator-1.0-SNAPSHOT.jar"]
