@@ -7,6 +7,7 @@ RUN apt-get update && \
 RUN mkdir /app
 
 COPY ./target/calculator-1.0-SNAPSHOT.jar /app
+COPY ./target/MANIFEST.MF /app/
 
 WORKDIR /app
 
